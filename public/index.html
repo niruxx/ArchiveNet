@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArchiveNet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+<script>
+(function () {
+  var stored = localStorage.getItem('archivenet-theme');
+  var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+</head>
+<body>
+
+<div class="bg-animation" aria-hidden="true">
+  <span class="bg-blob bg-blob-1"></span>
+  <span class="bg-blob bg-blob-2"></span>
+  <span class="bg-blob bg-blob-3"></span>
+</div>
+
+<header class="app-bar">
+  <div class="app-bar-inner">
+    <div class="brand">
+      <span class="brand-mark">📦</span>
+      <span class="brand-name">ArchiveNet</span>
+    </div>
+
+    <div class="search-shell">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input id="search-input" type="text" placeholder="Search archived links…" autocomplete="off">
+      <div id="search-results" class="search-dropdown"></div>
+    </div>
+
+    <div class="app-bar-actions">
+      <button id="snapshots-btn" type="button" class="btn-text">
+        <span aria-hidden="true">🗂️</span> Snapshots
+      </button>
+      <button id="export-btn" type="button" class="btn-text">
+        <span aria-hidden="true">⬇️</span> Export
+      </button>
+      <button id="import-btn" type="button" class="btn-text">
+        <span aria-hidden="true">⬆️</span> Import
+      </button>
+      <input id="import-file" type="file" accept=".zip" hidden>
+      <button id="theme-toggle" type="button" class="btn-text btn-icon-only" aria-label="Toggle dark mode">
+        <span aria-hidden="true">🌙</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <section class="hero-card fade-in">
+    <h1 class="hero-title">Save it before it's gone.</h1>
+    <p class="hero-subtitle">Archive any page as HTML and PDF in one click.</p>
+
+    <form id="archive-form" class="archive-form">
+      <input
+        id="url-input"
+        type="text"
+        placeholder="Paste a URL to archive"
+        autocomplete="off"
+        required
+      >
+      <button id="archive-btn" type="submit">Archive</button>
+    </form>
+
+    <label class="recursive-toggle">
+      <input type="checkbox" id="recursive-checkbox">
+      <span>Recursive — archive every page on this site, not just the ones linked from this URL</span>
+    </label>
+    <p id="recursive-warning" class="recursive-warning" hidden>
+      ⚠️ This crawls the entire site (up to 100 pages) instead of just 15 linked pages, so the archive will be significantly larger and take much longer to finish.
+    </p>
+  </section>
+
+  <section id="recent-gallery" class="recent-gallery fade-in" hidden>
+    <h2 class="recent-gallery-title">Recently archived</h2>
+    <div id="recent-gallery-grid" class="recent-gallery-grid"></div>
+  </section>
+</main>
+
+<footer class="version-tag">v0.1a</footer>
+
+<div id="toast" class="snackbar" role="status" aria-live="polite">
+  <span id="toast-icon" aria-hidden="true">✅</span>
+  <span id="toast-text">Archive completed</span>
+</div>
+
+<div id="dialog-overlay" class="dialog-overlay" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+    <div class="dialog-header">
+      <div class="dialog-title-group">
+        <button id="dialog-back" class="icon-btn" type="button" aria-label="Back" hidden>←</button>
+        <h2 id="dialog-title">Snapshots</h2>
+      </div>
+      <button id="dialog-close" class="icon-btn" type="button" aria-label="Close">✕</button>
+    </div>
+    <div id="dialog-body" class="dialog-body">
+      <div class="dialog-loading">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
